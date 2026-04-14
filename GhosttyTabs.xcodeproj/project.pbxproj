@@ -43,6 +43,12 @@
 		A500A001 /* VNCPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500A002 /* VNCPanel.swift */; };
 		A500A003 /* VNCPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500A004 /* VNCPanelView.swift */; };
 		A500A007 /* VNCKeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500A008 /* VNCKeychainStore.swift */; };
+		A500E001 /* AssistantPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500E002 /* AssistantPanel.swift */; };
+		A500E003 /* AssistantPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500E004 /* AssistantPanelView.swift */; };
+		A500E005 /* ClaudeCLIBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500E006 /* ClaudeCLIBridge.swift */; };
+		A500E007 /* AssistantPointingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500E008 /* AssistantPointingOverlay.swift */; };
+		A500E009 /* AgentSandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500E00A /* AgentSandbox.swift */; };
+		A500E00B /* AgentSandboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500E00C /* AgentSandboxManager.swift */; };
 		A500A005 /* RoyalVNCKit in Frameworks */ = {isa = PBXBuildFile; productRef = A500A006 /* RoyalVNCKit */; };
 		A5001290 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = A5001291 /* MarkdownUI */; };
 		A5001405 /* PanelContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5001415 /* PanelContentView.swift */; };
@@ -253,6 +259,12 @@
 		A500A002 /* VNCPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/VNCPanel.swift; sourceTree = "<group>"; };
 		A500A004 /* VNCPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/VNCPanelView.swift; sourceTree = "<group>"; };
 		A500A008 /* VNCKeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/VNCKeychainStore.swift; sourceTree = "<group>"; };
+		A500E002 /* AssistantPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/AssistantPanel.swift; sourceTree = "<group>"; };
+		A500E004 /* AssistantPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/AssistantPanelView.swift; sourceTree = "<group>"; };
+		A500E006 /* ClaudeCLIBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/ClaudeCLIBridge.swift; sourceTree = "<group>"; };
+		A500E008 /* AssistantPointingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panels/AssistantPointingOverlay.swift; sourceTree = "<group>"; };
+		A500E00A /* AgentSandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVM/AgentSandbox.swift; sourceTree = "<group>"; };
+		A500E00C /* AgentSandboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVM/AgentSandboxManager.swift; sourceTree = "<group>"; };
 		A5001416 /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		A5001417 /* WorkspaceContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceContentView.swift; sourceTree = "<group>"; };
 		A5001090 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -514,6 +526,12 @@
 				A500A002 /* VNCPanel.swift */,
 				A500A004 /* VNCPanelView.swift */,
 				A500A008 /* VNCKeychainStore.swift */,
+				A500E002 /* AssistantPanel.swift */,
+				A500E004 /* AssistantPanelView.swift */,
+				A500E006 /* ClaudeCLIBridge.swift */,
+				A500E008 /* AssistantPointingOverlay.swift */,
+				A500E00A /* AgentSandbox.swift */,
+				A500E00C /* AgentSandboxManager.swift */,
 				A5001510 /* CmuxWebView.swift */,
 				A5001415 /* PanelContentView.swift */,
 				A5001211 /* UpdateController.swift */,
@@ -845,6 +863,12 @@
 				A500A001 /* VNCPanel.swift in Sources */,
 				A500A003 /* VNCPanelView.swift in Sources */,
 				A500A007 /* VNCKeychainStore.swift in Sources */,
+				A500E001 /* AssistantPanel.swift in Sources */,
+				A500E003 /* AssistantPanelView.swift in Sources */,
+				A500E005 /* ClaudeCLIBridge.swift in Sources */,
+				A500E007 /* AssistantPointingOverlay.swift in Sources */,
+				A500E009 /* AgentSandbox.swift in Sources */,
+				A500E00B /* AgentSandboxManager.swift in Sources */,
 				A5001500 /* CmuxWebView.swift in Sources */,
 				A5001405 /* PanelContentView.swift in Sources */,
 				A5001201 /* UpdateController.swift in Sources */,

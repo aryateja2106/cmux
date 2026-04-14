@@ -4196,6 +4196,21 @@ class TabManager: ObservableObject {
         )
     }
 
+    /// Open an AI assistant panel in the focused pane of a workspace.
+    @discardableResult
+    func openAssistant(
+        inWorkspace tabId: UUID,
+        siblingPanelId: UUID? = nil
+    ) -> AssistantPanel? {
+        guard let workspace = tabs.first(where: { $0.id == tabId }),
+              let focusedPane = workspace.bonsplitController.focusedPaneId else { return nil }
+        let resolvedSiblingId = siblingPanelId ?? workspace.focusedPanelId
+        return workspace.newAssistantSurface(
+            inPane: focusedPane,
+            siblingPanelId: resolvedSiblingId
+        )
+    }
+
     /// Open a browser in a specific workspace, optionally preferring a split-right layout.
     @discardableResult
     func openBrowser(

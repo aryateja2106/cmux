@@ -6028,6 +6028,8 @@ struct ContentView: View {
             return String(localized: "commandPalette.kind.markdown", defaultValue: "Markdown")
         case .vnc:
             return String(localized: "commandPalette.kind.vnc", defaultValue: "VNC")
+        case .assistant:
+            return String(localized: "commandPalette.kind.assistant", defaultValue: "Assistant")
         }
     }
 
@@ -6041,6 +6043,8 @@ struct ContentView: View {
             return ["markdown", "note", "preview"]
         case .vnc:
             return ["vnc", "remote", "desktop", "realvnc"]
+        case .assistant:
+            return ["assistant", "ai", "clicky", "help", "sparkles"]
         }
     }
 
@@ -6139,6 +6143,8 @@ struct ContentView: View {
         case "palette.newBrowserTab":
             return .openBrowser
         case "palette.newVNCTab":
+            return nil // Handled by registry, no built-in action
+        case "palette.newAssistantTab":
             return nil // Handled by registry, no built-in action
         case "palette.closeWindow":
             return .closeWindow
@@ -6410,6 +6416,14 @@ struct ContentView: View {
                 title: constant(String(localized: "command.newVNCTab.title", defaultValue: "New Tab (VNC Remote Desktop)")),
                 subtitle: constant(String(localized: "command.newVNCTab.subtitle", defaultValue: "Tab")),
                 keywords: ["new", "vnc", "remote", "desktop", "realvnc"]
+            )
+        )
+        contributions.append(
+            CommandPaletteCommandContribution(
+                commandId: "palette.newAssistantTab",
+                title: constant(String(localized: "command.newAssistantTab.title", defaultValue: "New Tab (AI Assistant)")),
+                subtitle: constant(String(localized: "command.newAssistantTab.subtitle", defaultValue: "Tab")),
+                keywords: ["new", "assistant", "ai", "clicky", "help", "sparkles"]
             )
         )
         contributions.append(
@@ -7143,6 +7157,12 @@ struct ContentView: View {
                     hostname: "localhost",
                     port: 5900
                 )
+            }
+        }
+        registry.register(commandId: "palette.newAssistantTab") {
+            DispatchQueue.main.async {
+                guard let currentWorkspaceId = tabManager.selectedTabId else { return }
+                _ = tabManager.openAssistant(inWorkspace: currentWorkspaceId)
             }
         }
         registry.register(commandId: "palette.closeTab") {

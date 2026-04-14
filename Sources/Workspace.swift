@@ -496,6 +496,9 @@ extension Workspace {
             terminalSnapshot = nil
             browserSnapshot = nil
             markdownSnapshot = nil
+        case .assistant:
+            // Assistant panels are ephemeral — no session persistence yet
+            return nil
         }
 
         // Build VNC snapshot (nil for non-VNC panels)
@@ -716,6 +719,9 @@ extension Workspace {
             }
             applySessionPanelMetadata(snapshot, toPanelId: vncPanel.id)
             return vncPanel.id
+        case .assistant:
+            // Assistant panels are not restored from session snapshots
+            return nil
         }
     }
 
@@ -6763,6 +6769,7 @@ final class Workspace: Identifiable, ObservableObject {
         static let browser = "browser"
         static let markdown = "markdown"
         static let vnc = "vnc"
+        static let assistant = "assistant"
     }
 
     enum PanelShellActivityState: String {
@@ -7467,6 +7474,8 @@ final class Workspace: Identifiable, ObservableObject {
             return SurfaceKind.markdown
         case .vnc:
             return SurfaceKind.vnc
+        case .assistant:
+            return SurfaceKind.assistant
         }
     }
 
@@ -9570,6 +9579,80 @@ final class Workspace: Identifiable, ObservableObject {
                 )
             }
         panelSubscriptions[vncPanel.id] = subscription
+    }
+
+    // MARK: - Assistant Panel
+
+    func newAssistantSurface(
+        inPane paneId: PaneID,
+        siblingPanelId: UUID? = nil,
+        focus: Bool? = nil
+    ) -> AssistantPanel? {
+        let shouldFocusNewTab = focus ?? (bonsplitController.focusedPaneId == paneId)
+        let previousFocusedPanelId = focusedPanelId
+        let previousHostedView = focusedTerminalPanel?.hostedView
+
+        let assistantPanel = AssistantPanel(workspaceId: id)
+        if let siblingId = siblingPanelId,
+           let sibling = panels[siblingId] {
+            assistantPanel.siblingPanel = sibling
+        }
+        panels[assistantPanel.id] = assistantPanel
+        panelTitles[assistantPanel.id] = assistantPanel.displayTitle
+
+        guard let newTabId = bonsplitController.createTab(
+            title: assistantPanel.displayTitle,
+            icon: assistantPanel.displayIcon,
+            kind: SurfaceKind.assistant,
+            isDirty: assistantPanel.isDirty,
+            isLoading: false,
+            isPinned: false,
+            inPane: paneId
+        ) else {
+            panels.removeValue(forKey: assistantPanel.id)
+            panelTitles.removeValue(forKey: assistantPanel.id)
+            return nil
+        }
+
+        surfaceIdToPanelId[newTabId] = assistantPanel.id
+        if shouldFocusNewTab {
+            bonsplitController.focusPane(paneId)
+            bonsplitController.selectTab(newTabId)
+            applyTabSelection(tabId: newTabId, inPane: paneId)
+        } else {
+            preserveFocusAfterNonFocusSplit(
+                preferredPanelId: previousFocusedPanelId,
+                splitPanelId: assistantPanel.id,
+                previousHostedView: previousHostedView
+            )
+        }
+
+        installAssistantPanelSubscription(assistantPanel)
+        return assistantPanel
+    }
+
+    private func installAssistantPanelSubscription(_ assistantPanel: AssistantPanel) {
+        let subscription = assistantPanel.$displayTitle
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self, weak assistantPanel] newTitle in
+                guard let self,
+                      let assistantPanel,
+                      let tabId = self.surfaceIdFromPanelId(assistantPanel.id) else { return }
+                guard let existing = self.bonsplitController.tab(tabId) else { return }
+
+                if self.panelTitles[assistantPanel.id] != newTitle {
+                    self.panelTitles[assistantPanel.id] = newTitle
+                }
+                let resolvedTitle = self.resolvedPanelTitle(panelId: assistantPanel.id, fallback: newTitle)
+                guard existing.title != resolvedTitle else { return }
+                self.bonsplitController.updateTab(
+                    tabId,
+                    title: resolvedTitle,
+                    hasCustomTitle: self.panelCustomTitles[assistantPanel.id] != nil
+                )
+            }
+        panelSubscriptions[assistantPanel.id] = subscription
     }
 
     // MARK: - AVM Status
